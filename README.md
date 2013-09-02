@@ -1,0 +1,4 @@
+tektshared
+==========
+
+Shared TouchDesigner components
