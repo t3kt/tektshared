@@ -36,9 +36,9 @@ class ExtBase:
 		self.comp = comp
 		pass
 
-class LeapInExt(ExtBase):
+class LeapInExt:
 	def __init__(self, comp):
-		super().__init__(comp)
+		self.comp = comp
 
 	def inputcol(self, col):
 		return colvals(self.comp.op('activeleapinputmap'), col)
