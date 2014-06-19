@@ -31,16 +31,10 @@ def leapHandSelect(scriptOP):
 # def fproxy(tmod, name):
 # 	pass
 
-class ExtBase:
-	def __init__(self, comp):
-		self.comp = comp
-		pass
+#class ExtBase:
+#	def __init__(self, comp):
+#		self.comp = comp
+#		pass
 
-class LeapInExt:
-	def __init__(self, comp):
-		self.comp = comp
-
-	def inputcol(self, col):
-		return colvals(self.comp.op('activeleapinputmap'), col)
 
 
