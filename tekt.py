@@ -9,6 +9,12 @@ def colvals(dat, col, joiner=' '):
 	vals = [c.val for c in dat.col(col)]
 	return vals if joiner is None else joiner.join(vals)
 
+def rowvals(dat, row, joiner=' '):
+	if dat.numRows == 0:
+		return [] if joiner is None else ""
+	vals = [c.val for c in dat.row(row)]
+	return vals if joiner is None else joiner.join(vals)
+
 
 def leapHandSelect(scriptOP):
 	scriptOP.clear()
@@ -18,29 +24,66 @@ def leapHandSelect(scriptOP):
 			scriptOP.appendRow([indat[r, 0] + "_raw", "1"])
 
 
-# class FProxy:
-# 	def __init__(self, fname, modpath='/_/local/modules/tekt'):
-# 		self.fname = fname
-# 		self.mod = td.mod(modpath)
-#
-# 	def __call__(self, *args, **kwargs):
-# 		f = getattr(self.mod, self.fname)
-# 		return f(*args, **kwargs)
-#
-#
-# def fproxy(tmod, name):
-# 	pass
+class UISetter:
+	pass
 
-class ExtBase:
-	def __init__(self, comp):
-		self.comp = comp
-		pass
+def rowsToDicts(dat):
+	if dat.numRows == 0:
+		return []
+	names = dat.row(0)
+	return (_tableLineToDict(names, dat.row(i)) for i in range(1, dat.numRows))
 
-class LeapInExt:
-	def __init__(self, comp):
-		self.comp = comp
+def colsToDicts(dat):
+	if dat.numCols == 0:
+		return []
+	names = dat.col(0)
+	return (_tableLineToDict(names, dat.col(i)) for i in range(1, dat.numCols))
 
-	def inputcol(self, col):
-		return colvals(self.comp.op('activeleapinputmap'), col)
+def _tableLineToDict(names, vals):
+	out = dict()
+	for i in range(len(names)):
+		out[names[i].val] = vals[i].val
+
+def rowToDict(row):
+	if len(row) is 0:
+		return {}
+	dat = row[0].owner
+	return _tableLineToDict(dat.row(0), row)
+
+def colToDict(col):
+	if len(col) is 0:
+		return {}
+	dat = col[0].owner
+	return _tableLineToDict(dat.col(0), col)
+
+def toggle_set(uiop, val, param=None):
+	uiop.op("button").click(1 if val is not 0 else 0)
+
+def slider_set(uiop, val, param=None):
+	uiop.op("set").run(val)
+
+def tuik_auto_set(uiop, val, param=None):
+	uidefine = uiop.op("local/define")
+	uitype = uidefine['type', 1].val if uidefine is not None else None
+	if not uitype:
+		raise Exception('UI operator ' + uiop.path + ' does not support type tuik_auto')
+	callUISetter(uiop, uitype, val, param=param)
+
+uiSetters = {
+	'toggle': toggle_set,
+	'slider': slider_set,
+	'sliderhorz': slider_set,
+	'slidervert': slider_set,
+	'xfade': slider_set,
+	'tuik_auto': tuik_auto_set
+}
+
+def callUISetter(uiop, uitype, val, param=None):
+	setter = uiSetters[uitype]
+	if setter is None:
+		raise Exception('Unsupported UI operator type: ' + uitype)
+	setter(uiop, val, param=param)
+
+
 
 
