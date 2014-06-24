@@ -95,6 +95,10 @@ def callUISetter(uiop, uitype, val, param=None):
 		raise Exception('Unsupported UI operator type: ' + uitype)
 	setter(uiop, val, param=param)
 
-
+def getColorParams(op, prefix='color', alpha='alpha'):
+	parnames = [prefix + 'r', prefix + 'g', prefix + 'b']
+	if alpha is not None:
+		parnames.append(alpha)
+	return tuple(p.val for p in op.pars(*parnames))
 
 
