@@ -2,6 +2,9 @@
 __author__ = 'tekt'
 import td
 
+def dbg(*args):
+	for arg in args:
+		print(repr(arg))
 
 def colvals(dat, col, joiner=' '):
 	if dat.numRows == 0:
