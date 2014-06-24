@@ -27,9 +27,6 @@ def leapHandSelect(scriptOP):
 			scriptOP.appendRow([indat[r, 0] + "_raw", "1"])
 
 
-class UISetter:
-	pass
-
 def rowsToDicts(dat):
 	if dat.numRows < 2:
 		return []
@@ -62,6 +59,13 @@ def tableToDict(dat, vertical=True):
 		return colToDict(dat.col(1))
 	else:
 		return colToDict(dat.row(1))
+
+def appendDictRow(dat, rowdict):
+	dat.appendRow([rowdict.get(name.val, '') for name in dat.row(0)])
+
+
+class UISetter:
+	pass
 
 def toggle_set(uiop, val, param=None):
 	uiop.op("button").click(1 if val is not 0 else 0)
