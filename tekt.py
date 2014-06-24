@@ -43,9 +43,7 @@ def colsToDicts(dat):
 	return (_tableLineToDict(names, dat.col(i)) for i in range(1, dat.numCols))
 
 def _tableLineToDict(names, vals):
-	out = dict()
-	for i in range(len(names)):
-		out[names[i].val] = vals[i].val
+	return {names[i].val: vals[i].val for i in range(len(names))}
 
 def rowToDict(row):
 	if len(row) is 0:
