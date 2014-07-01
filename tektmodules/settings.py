@@ -10,6 +10,9 @@ class Settings(metaclass=ABCMeta):
 	def __getattr__(self, name):
 		return self.get(name)
 
+	def __getitem__(self, name):
+		return self.get(name)
+
 class DATSettings(Settings):
 	def __init__(self, dat, usecols=False):
 		self.dat = dat
