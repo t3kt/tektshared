@@ -59,6 +59,8 @@ def appendDictRow(dat, rowdict):
 
 def getStr(dat, key, defaultval=None, usecols=False):
 	dat = _prepDATArg(dat)
+	if dat is None or dat.numRows == 0:
+		return defaultval
 	cell = dat[1, key] if usecols else dat[key, 1]
 	return defaultval if cell is None or cell.val == '' else cell.val
 

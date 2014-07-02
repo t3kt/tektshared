@@ -27,13 +27,16 @@ def leapHandSelect(scriptOP):
 		if indat[r, "leapraw"].val == "1" and indat[r, "leapswitch"].val == scriptOP.name + ":tracking":
 			scriptOP.appendRow([indat[r, 0] + "_raw", "1"])
 
-
-
 def getColorParams(op, prefix='color', alpha='alpha'):
 	parnames = [prefix + 'r', prefix + 'g', prefix + 'b']
 	if alpha is not None:
 		parnames.append(alpha)
 	return tuple(p.val for p in op.pars(*parnames))
 
+def clearCOMP(comp):
+	if isinstance(comp, str):
+		comp = op(comp)
+	for child in comp.children:
+		child.destroy()
 
 
