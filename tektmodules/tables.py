@@ -57,10 +57,10 @@ def appendDictRow(dat, rowdict):
 	dat = _prepDATArg(dat)
 	dat.appendRow([rowdict.get(name.val, '') for name in dat.row(0)])
 
-def getStr(dat, key, usecols=False):
+def getStr(dat, key, defaultval=None, usecols=False):
 	dat = _prepDATArg(dat)
 	cell = dat[1, key] if usecols else dat[key, 1]
-	return None if cell is None or cell.val == '' else cell.val
+	return defaultval if cell is None or cell.val == '' else cell.val
 
 def getFloat(dat, key, defaultval=0.0, usecols=False):
 	val = getStr(dat, key, usecols)
