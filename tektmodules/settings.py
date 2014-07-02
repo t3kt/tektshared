@@ -4,7 +4,7 @@ from abc import ABCMeta, abstractmethod
 
 class Settings(metaclass=ABCMeta):
 	@abstractmethod
-	def get(self, key, default=None):
+	def get(self, key, defaultval=None):
 		pass
 
 	def __getattr__(self, name):
@@ -18,34 +18,34 @@ class DATSettings(Settings):
 		self.dat = dat
 		self.usecols = usecols
 
-	def get(self, key, default=None):
+	def get(self, key, defaultval=None):
 		if self.dat is None or self.dat.numRows == 0:
-			return default
+			return defaultval
 		if self.usecols:
 			cell = self.dat[1, key]
 		else:
 			cell = self.dat[key, 1]
-		return cell.val if cell is not None else default
+		return cell.val if cell is not None else defaultval
 
 class CHOPSettings(Settings):
 	def __init__(self, chop):
 		self.chop = chop
 
-	def get(self, key, default=None):
+	def get(self, key, defaultval=None):
 		if self.chop is None:
-			return default
+			return defaultval
 		chan = self.chop[key]
-		return chan.eval() if chan is not None else default
+		return chan.eval() if chan is not None else defaultval
 
 class DictSettings(Settings):
 	def __init__(self, settingsdict):
 		self.settingsdict = settingsdict
 
-	def get(self, key, default=None):
+	def get(self, key, defaultval=None):
 		if self.settingsdict is None:
-			return default
-		return self.settingsdict.get(key, default)
+			return defaultval
+		return self.settingsdict.get(key, defaultval)
 
 class NullSettings(Settings):
-	def get(self, key, default=None):
-		return default
+	def get(self, key, defaultval=None):
+		return defaultval
