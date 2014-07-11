@@ -1,6 +1,7 @@
 # Root module for python extensions and utilities
 __author__ = 'tekt'
 import td
+from colorsys import rgb_to_hsv, hsv_to_rgb
 
 #import sys
 #if not td.project.folder in sys.path:
@@ -39,4 +40,7 @@ def clearCOMP(comp):
 	for child in comp.children:
 		child.destroy()
 
+def hueShift(rgb, hoffset):
+	hsv = rgb_to_hsv(rgb[0], rgb[1], rgb[2])
+	return hsv_to_rgb((hsv[0] + hoffset) % 1.0, hsv[1], hsv[2]) + rgb[3:]
 
