@@ -44,3 +44,8 @@ def hueShift(rgb, hoffset):
 	hsv = rgb_to_hsv(rgb[0], rgb[1], rgb[2])
 	return hsv_to_rgb((hsv[0] + hoffset) % 1.0, hsv[1], hsv[2]) + rgb[3:]
 
+def applySubOverrides(overrides, base=None):
+        if base is None:
+                base = overrides.parent()
+        for i in range(1, overrides.numRows):
+                base.op(overrides[i, 'path'])[overrides[i, 'name'], 1] = overrides[i, 'value']
